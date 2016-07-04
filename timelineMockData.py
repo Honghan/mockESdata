@@ -15,6 +15,9 @@ import datetime
 # elastic server (using redhat cloud server or local ones)
 es_server = "timeline-silverash.rhcloud.com:80"
 
+# index name
+indexname = "mock"
+
 # number of patients to be generated
 num_patients = 100
 
@@ -134,17 +137,17 @@ def cleanIndex(arr, conn=None):
         print( resp.read() )
 
 
-cleanIndex(['/mock'])
+cleanIndex(['/' + indexname])
 print('index cleaned, generating data...')
 
 data = {}
 numdocs = 1
 for i in range(1, num_patients + 1):
     p = genpatientdata()
-    data["/mock/patient/" + str(i)] = p
+    data["/" + indexname + "/patient/" + str(i)] = p
     numdoc = (int)(random.random() * num_more_docs) + num_min_docs
     for j in range(1, numdoc + 1):
-        data["/mock/doc/" + str(numdocs)] = gendoc(p["brcid"])
+        data["/" + indexname + "/doc/" + str(numdocs)] = gendoc(p["brcid"])
         numdocs += 1
 print('data generated, saving to Elastic Index...')
 
